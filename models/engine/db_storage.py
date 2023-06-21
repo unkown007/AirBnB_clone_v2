@@ -9,7 +9,8 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 classes = {
         'State': State, 'City': City,
-        'User': User, 'Place': Place
+        'User': User, 'Place': Place,
+        'Review': Review
         }
 
 
