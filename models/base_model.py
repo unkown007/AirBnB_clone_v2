@@ -3,32 +3,29 @@
 import uuid
 import models
 from datetime import datetime
-from os import getenv, environ
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, DateTime
 
 
 Base = declarative_base()
-stype = 'HBNB_TYPE_STORAGE'
 
 
 class BaseModel:
     """A base class for all hbnb models"""
-    if getenv('HBNB_TYPE_STORAGE', '') == 'db':
-        id = Column(
-                String(60),
-                unique=True,
-                primary_key=True,
-                nullable=False,
-                default=str(uuid.uuid4()))
-        created_at = Column(
-                DateTime,
-                nullable=False,
-                default=datetime.utcnow())
-        updated_at = Column(
-                DateTime,
-                nullable=False,
-                default=datetime.utcnow())
+    id = Column(
+            String(60),
+            unique=True,
+            primary_key=True,
+            nullable=False,
+            default=str(uuid.uuid4()))
+    created_at = Column(
+            DateTime,
+            nullable=False,
+            default=datetime.utcnow())
+    updated_at = Column(
+            DateTime,
+            nullable=False,
+            default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
@@ -40,7 +37,7 @@ class BaseModel:
                     value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
                 if key not in ('__class__', '_sa_instance_state'):
                     setattr(self, key, value)
-        elif stype not in environ.keys() or environ[stype] != 'db':
+        else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
