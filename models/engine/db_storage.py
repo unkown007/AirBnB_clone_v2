@@ -8,7 +8,8 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 
 classes = {
-        'State': State, 'City': City
+        'State': State, 'City': City,
+        'User': User
         }
 
 
