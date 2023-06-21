@@ -122,34 +122,13 @@ class HBNBCommand(cmd.Cmd):
         elif argv[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        if len(argv) == 1:
-            new_instance = HBNBCommand.classes[argv[0]]()
-            storage.save()
-            print(new_instance.id)
-            storage.save()
-        else:
-            dic = {}
-            for i in range(1, len(argv)):
-                key_value = argv[i].split('=')
-                if key_value[1][0] == '\"' and key_value[1][-1] == '\"':
-                    key_value[1] = key_value[1][1:len(key_value[1]) - 1]\
-                            .replace('_', ' ')
-                elif ('.' in key_value[1]):
-                    tmp = key_value[1].replace('.', '')
-                    if (tmp[0] == '-' and tmp[1:].isdecimal())\
-                            or tmp.isdecimal():
-                        key_value[1] = float(key_value[1])
-                    else:
-                        return
-                elif (key_value[1][0] == '-' and key_value[1][1:].isdecimal())\
-                        or key_value[1].isdecimal():
-                    key_value[1] = int(key_value[1])
-                else:
-                    return
-                dic[key_value[0]] = key_value[1]
-            new_instance = HBNBCommand.classes[argv[0]](**dic)
-            print(new_instance.id)
-            new_instance.save()
+        new_instance = HBNBCommand.classes[argv[0]]()
+        for param in argv[1:]:
+            my_param = param.split('=')
+            my_param[1] = my_param[1].replace('_', ' ')
+            setattr(new_instance, my_param[0], eval(my_param[1]))
+        print(new_instance.id)
+        new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
