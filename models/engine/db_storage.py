@@ -41,15 +41,11 @@ class DBStorage():
             for key in classes:
                 for instance in self.__session.query(classes[key]):
                     new_key = key + '.' + instance.id
-                    if '_sa_instance_state' in instance.__dict__:
-                        del instance.__dict__['_sa_instance_state']
                     objs[new_key] = instance
         else:
             if cls in classes:
                 for instance in self.__session.query(classes[cls]):
                     new_key = cls + '.' + instance.id
-                    if '_sa_instance_state' in instance.__dict__:
-                        del instance.__dict__['_sa_instance_state']
                     objs[new_key] = instance
         return objs
 

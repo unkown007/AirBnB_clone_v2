@@ -122,11 +122,12 @@ class HBNBCommand(cmd.Cmd):
         elif argv[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[argv[0]]()
+        kwargs = {}
         for param in argv[1:]:
             my_param = param.split('=')
             my_param[1] = my_param[1].replace('_', ' ')
-            setattr(new_instance, my_param[0], eval(my_param[1]))
+            kwargs[my_param[0]] = eval(my_param[1])
+        new_instance = HBNBCommand.classes[argv[0]](**kwargs)
         print(new_instance.id)
         new_instance.save()
 
