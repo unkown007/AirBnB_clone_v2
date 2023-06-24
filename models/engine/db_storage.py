@@ -40,14 +40,15 @@ class DBStorage():
         objs = {}
         if cls is None:
             for key in classes:
-                for instance in self.__session.query(classes[key]):
+                for instance in self.__session.query(classes[key]).all():
                     new_key = key + '.' + instance.id
                     objs[new_key] = instance
         else:
             if cls in classes:
-                for instance in self.__session.query(classes[cls]):
+                for instance in self.__session.query(classes[cls]).all():
                     new_key = cls + '.' + instance.id
                     objs[new_key] = instance
+        self.__session.commit()
         return objs
 
     def new(self, obj):
@@ -64,6 +65,7 @@ class DBStorage():
         """ delete from the current database session obj """
         if obj is not None:
             self.__session.delete(obj)
+            self.__session.commit()
 
     def reload(self):
         """ create all tables in the database """
