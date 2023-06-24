@@ -3,8 +3,24 @@
 from os import getenv
 import models
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, Integer, Float, ForeignKey
+from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
+
+
+place_amenity = Table(
+        'place_amenity', Base.metadata,
+        Column(
+            'place_id',
+            String(60),
+            ForeignKey('places.id'),
+            primary_key=True,
+            nullable=False),
+        Column(
+            'aminity_id',
+            String(60),
+            ForeignKey('amenities.id'),
+            primary_key=True,
+            nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -53,6 +69,11 @@ class Place(BaseModel, Base):
                 'Review',
                 backref='place',
                 cascade='all, delete-orphan')
+        amenities = relationship(
+                'Amenity',
+                secondary=place_amenity,
+                backref='places',
+                viewonly=False)
     else:
         @property
         def reviews(self):
@@ -63,3 +84,20 @@ class Place(BaseModel, Base):
                 if self.id == r.place_id:
                     rev.append(r)
             return rev
+
+        @property
+        def amenities(self):
+            """ returns the list of Amenity instances with place_id
+            matching self.id """
+            amn = []
+            for a in storage.all('Amenity').values():
+                if self.id == a.place_id:
+                    amn.append(a)
+            return amn
+
+        @amenities.setter
+        def amenities(self, obj):
+            """ Adds id of object to list 'self.amenity_ids'
+            if object is Amenity """
+            if (type(obj) == 'Amenity'):
+                self.amenity_ids.append(obj.id)
