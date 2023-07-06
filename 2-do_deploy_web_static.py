@@ -1,10 +1,28 @@
 #!/usr/bin/python3
 """ deploy code to the server """
 import os.path
-from fabric.api import env, put, run
+from fabric.api import env, put, run, local
+from datetime import datetime
 
 
 env.hosts = ["18.234.168.215", "52.72.71.162"]
+
+
+def do_pack():
+    """ pack web_static folder into a .tgz file """
+    dt = datetime.utcnow()
+    file = "versions/web_static_{}{}{}{}{}{}.tgz".format(dt.year,
+                                                         dt.month,
+                                                         dt.day,
+                                                         dt.hour,
+                                                         dt.minute,
+                                                         dt.second)
+    if os.path.isdir("versions") is False:
+        if local("mkdir -p versions").failed is True:
+            return None
+    if local("tar -cvzf {} web_static".format(file)).failed is True:
+        return None
+    return file
 
 
 def do_deploy(archive_path):
