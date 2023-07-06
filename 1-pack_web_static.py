@@ -12,7 +12,8 @@ def do_pack():
     dt = datetime.now().strftime("%Y%m%d%H%M%S")
     fpath = "versions/web_static_{}.tgz".format(dt)
     file_tar = local("tar -cvzf {} web_static".format(fpath))
-    if file_tar.succeeded:
-        return fpath
-    else:
+    files = listdir("./versions")
+    paths = [path.join("./versions", base_name) for base_name in files]
+    if len(paths) == 0:
         return None
+    return max(paths, key=path.getctime)
