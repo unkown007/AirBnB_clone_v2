@@ -7,6 +7,8 @@ from datetime import datetime
 
 def do_pack():
     """ pack web_static folder into a .tgz file """
+    if not os.path.exists("web_static"):
+        return None
     dt = datetime.now().strftime("%Y%m%d%H%M%S")
     path = "versions/web_static_{}.tgz".format(dt)
     if not os.path.exists("versions"):
