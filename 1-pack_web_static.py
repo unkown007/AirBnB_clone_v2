@@ -12,7 +12,7 @@ def do_pack():
         fpath = "versions/web_static_{}.tgz".format(dt)
         if not os.path.exists("versions"):
             local("mkdir versions")
-        local("tar -cvzf {} web_static".format(fpath))
+        local("tar -cvzf {} web_static/".format(fpath))
         return fpath
     except Exception:
         return None
