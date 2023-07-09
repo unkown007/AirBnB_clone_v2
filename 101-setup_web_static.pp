@@ -9,7 +9,7 @@ exec { 'apt-get -y update && apt-get -y install nginx':
 }
 -> file { '/data/web_static/releases/test/index.html':
     ensure  => present,
-    content => "<html>\n\t<head>\n\t</head>\n\t<body>\n\t\tHolberton School\n\t</body>\n</html>"
+    content => "<html>\n\t<head>\n\t</head>\n\t<body>\n\t\tHolberton School\n\t</body>\n</html>\n"
 }
 -> exec { 'ln -sf /data/web_static/releases/test/ /data/web_static/current':
     path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
