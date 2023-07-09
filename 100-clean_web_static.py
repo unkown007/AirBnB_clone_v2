@@ -73,6 +73,7 @@ def deploy():
         return False
     return do_deploy(f)
 
+
 def do_clean(number=0):
     """ Deletes out-of-date archives
     Args:
