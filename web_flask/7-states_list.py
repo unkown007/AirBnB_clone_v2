@@ -11,6 +11,7 @@ def rm_session(arg):
     """ remove the current SQLAlchemy Session """
     storage.close()
 
+
 @app.route('/states_list', strict_slashes=False)
 def states():
     """ display a HTML page """
