@@ -16,21 +16,28 @@ def rm_session(arg):
 @app.route('/states/<id>', strict_slashes=False)
 def states(id=None):
     """ display a HTML page """
-    st = storage.all(State)
-    if id is None:
-        st = st.values()
-        if st is not None:
-            st = sorted(st, key=lambda state: state.name)
-            return render_template('9-states.html', states=st)
-    else:
-        key = State.__name__ + '.' + id
-        state = st.get(key)
-        found = False
-        if state is not None:
-            state.cities = sorted(state.cities, key=lambda city: city.name)
-            found = True
+    states = storage.all(State).values()
+    states = sorted(states, key=lambda k: k.name)
+    found = 0
+    state = ""
+    cities = []
 
-        return render_template('9-states.html', states=state, found=found)
+    for i in states:
+        if id == i.id:
+            state = i
+            found = 1
+            break
+    if found:
+        states = sorted(state.cities, key=lambda k: k.name)
+        state = state.name
+
+    if id and not found:
+        found = 2
+
+    return render_template('9-states.html',
+                           state=state,
+                           array=states,
+                           found=found)
 
 
 if __name__ == "__main__":
