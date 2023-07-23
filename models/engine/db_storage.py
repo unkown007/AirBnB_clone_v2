@@ -9,6 +9,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 classref = [State, City, User, Place, Review, Amenity]
 
+
 class DBStorage():
     """ Databasse Storage definition """
     __engine = None
@@ -69,7 +70,7 @@ class DBStorage():
                 sessionmaker(
                     bind=self.__engine,
                     expire_on_commit=False))
-                # self.__session = Session()
+        # self.__session = Session()
 
     def close(self):
         """ close the session """
