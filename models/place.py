@@ -72,7 +72,7 @@ class Place(BaseModel, Base):
         amenities = relationship(
                 'Amenity',
                 secondary=place_amenity,
-                backref='places',
+                # backref='places',
                 viewonly=False)
     else:
         @property

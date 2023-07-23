@@ -7,12 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 
-classes = {
-        'State': State, 'City': City,
-        'User': User, 'Place': Place,
-        'Review': Review, 'Amenity': Amenity
-        }
-
+classref = [State, City, User, Place, Review, Amenity]
 
 class DBStorage():
     """ Databasse Storage definition """
@@ -39,14 +34,14 @@ class DBStorage():
         """
         objs = {}
         if cls is None:
-            for key in classes:
-                for instance in self.__session.query(classes[key]).all():
-                    new_key = key + '.' + instance.id
+            for cls in classref:
+                for instance in self.__session.query(cls).all():
+                    new_key = cls.__name__ + '.' + instance.id
                     objs[new_key] = instance
         else:
-            if cls in classes:
-                for instance in self.__session.query(classes[cls]).all():
-                    new_key = cls + '.' + instance.id
+            if cls in classref:
+                for instance in self.__session.query(cls).all():
+                    new_key = cls.__name__ + '.' + instance.id
                     objs[new_key] = instance
         self.__session.commit()
         return objs
@@ -70,8 +65,12 @@ class DBStorage():
     def reload(self):
         """ create all tables in the database """
         Base.metadata.create_all(self.__engine)
-        Session = scoped_session(
+        self.__session = scoped_session(
                 sessionmaker(
                     bind=self.__engine,
                     expire_on_commit=False))
-        self.__session = Session()
+                # self.__session = Session()
+
+    def close(self):
+        """ close the session """
+        self.__session.remove()
