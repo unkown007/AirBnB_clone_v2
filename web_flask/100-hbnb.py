@@ -45,7 +45,9 @@ def filters():
                     tmp['place'] = place
                     user_place.append(tmp)
 
-    return render_template('100-hbnb.html', states=states, amenities=amenities, places=user_place)
+    return render_template(
+            '100-hbnb.html', states=states,
+            amenities=amenities, places=user_place)
 
 
 if __name__ == "__main__":

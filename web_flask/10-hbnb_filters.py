@@ -17,7 +17,7 @@ def err(error):
 def filters():
     """ display a HTML page like 6-index.html """
     states = storage.all(State).values()
-    amenities = storage.all(Amenity).values();
+    amenities = storage.all(Amenity).values()
     if states is not None:
         states = sorted(states, key=lambda state: state.name)
         for state in states:
@@ -28,7 +28,8 @@ def filters():
     if amenities is not None:
         amenities = sorted(states, key=lambda amenity: amenity.name)
 
-    return render_template('10-hbnb_filters.html', states=states, amenities=amenities)
+    return render_template(
+            '10-hbnb_filters.html', states=states, amenities=amenities)
 
 
 if __name__ == "__main__":
